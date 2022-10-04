@@ -30,9 +30,6 @@ const mockSelect = [
   { key: 2, data: "Bakery" },
   { key: 3, data: "Cafe" },
 ];
-const today = new Date().toLocaleString("en-us", {
-  weekday: "long",
-});
 
 function Contents() {
   const [textSearch, setTextSearch] = useState("");
@@ -46,6 +43,33 @@ function Contents() {
     const value = event.target.value;
     setTextSelect(value);
     value.toLocaleLowerCase().includes(textSearch.toLocaleLowerCase());
+  };
+
+  useEffect(() => {
+    getDate();
+  }, []);
+
+  const getDate = () => {
+    const day = new Date().getDay();
+
+    switch (day) {
+      case 0:
+        return "Sunday";
+      case 1:
+        return "Monday";
+      case 2:
+        return "Tuesday";
+      case 3:
+        return "Wednesday";
+      case 4:
+        return "Thursday";
+      case 5:
+        return "Friday";
+      case 6:
+        return "Saturday";
+      default:
+        return "";
+    }
   };
 
   return (
@@ -179,16 +203,15 @@ function Contents() {
                             }}
                           >
                             <CalendarMonthIcon />
-                            {/* {console.log("today", today)}
-                            {item.operation_time.map((item2, i) => {
-                              console.log("today", today);
-                              if (item2.day === today) {
-                                return {  item2 };
-                              } else {
-                                // console.log("false");
-                              }
-                             
-                            })} */}
+                            {item.operation_time.map((item2) => {
+                              return (
+                                getDate() === item2.day && (
+                                  <div>
+                                    {item2.time_open} - {item2.time_close}{" "}
+                                  </div>
+                                )
+                              );
+                            })}
                           </div>
                         </Typography>
                         <Typography
